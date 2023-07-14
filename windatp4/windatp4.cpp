@@ -26,7 +26,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: W tym miejscu umieść kod.
-
+    GdiplusStartupInput gdiplusStartupInput;
+    ULONG_PTR gdiplusToken;
+    GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
     // Inicjuj ciągi globalne
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_WINDATP4, szWindowClass, MAX_LOADSTRING);
@@ -95,20 +97,286 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // Przechowuj dojście wystąpienia w naszej zmiennej globalnej
+    hInst = hInstance; // Przechowuj dojście wystąpienia w naszej zmiennej globalnej
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
+        CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+    //pietro 5
+    HWND hwndButton54 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"4",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        10,         // x position 
+        10,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)54,       // No menu. 
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+    HWND hwndButton53 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"3",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        10,         // x position 
+        10 + 20,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)53,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
 
-   return TRUE;
+    HWND hwndButton52 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"2",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        10,         // x position 
+        10 + 40,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)52,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton51 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"1",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        10,         // x position 
+        10 + 60,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)51,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+    //pietro 4
+    int x = 700, y = 120;
+    HWND hwndButton45 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"5",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x,         // x position 
+        y,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)45,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton43 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"3",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x,         // x position 
+        y + 20,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)43,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton42 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"2",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x,         // x position 
+        y + 40,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)42,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton41 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"1",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x,         // x position 
+        y + 60,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)41,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+    //pietro 3
+    int x1 = 10, y1 = y + 60 + 30;
+    HWND hwndButton35 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"5",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x1,         // x position 
+        y1,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)35,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton34 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"4",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x1,         // x position 
+        y1 + 20,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)34,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton32 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"2",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x1,         // x position 
+        y1 + 40,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)32,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton31 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"1",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x1,         // x position 
+        y1 + 60,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)31,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    //pietro 2
+    int x2 = 700, y2 = y1 + 60 + 30;
+    HWND hwndButton25 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"5",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x2,         // x position 
+        y2,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)25,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton24 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"4",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x2,         // x position 
+        y2 + 20,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)24,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton23 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"3",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x2,         // x position 
+        y2 + 40,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)23,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton21 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"1",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x2,         // x position 
+        y2 + 60,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)21,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+    //pietro 1
+    int x3 = 10, y3 = y2 + 60 + 30;
+    HWND hwndButton15 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"5",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x3,         // x position 
+        y3,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)15,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton14 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"4",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x3,         // x position 
+        y3 + 20,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)14,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton13 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"3",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x3,         // x position 
+        y3 + 40,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)13,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    HWND hwndButton12 = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"2",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        x3,         // x position 
+        y3 + 60,         // y position 
+        20,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)12,       // No menu.
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+
+    if (!hWnd)
+    {
+        return FALSE;
+    }
+
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
+
+    return TRUE;
 }
 
 //

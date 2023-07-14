@@ -16,8 +16,6 @@
 #include <gdiplus.h>
 
 #include <vector>
-#include <iterator>
-#include <stack>
 #include <algorithm>
 
 #pragma comment(lib,"gdiplus.lib")
