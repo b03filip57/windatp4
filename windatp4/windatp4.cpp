@@ -6,6 +6,18 @@
 
 #define MAX_LOADSTRING 100
 const int DLUGOSC_PIETRA = 105; //długość pomiędzy pietrami;
+const int CZAS = 33;
+const int ODLEGLOSC_POMIEDZY_OSOBAMI = 25;
+const int PREDKOSC = 5;
+const int PARTER = 525;
+const int ILOSC_PIETER = 5;
+const int MAX_WAGA = 600;
+const int DRZWI_LIMIT = 80;
+const enum STANY_OSOBY { OSOBA_STOP, OSOBA_KOLEJKA, OSOBA_W_WINDZIE, OSOBA_RUCH, OSOBA_PO_WINDZIE, OSOBA_USUN };
+const enum STANY_WINDY { WINDA_IDLE, WINDA_STOP, WINDA_DRZWI, WINDA_RUCH };
+const int PRZYCISKI_ID[20]{ 12,13,14,15,21,23,24,25,31,32,34,35,41,42,43,45,51,52,53,54 };
+
+
 // Zmienne globalne:
 HINSTANCE hInst;                                // bieżące wystąpienie
 WCHAR szTitle[MAX_LOADSTRING];                  // Tekst paska tytułu
