@@ -5,7 +5,7 @@
 #include "windatp4.h"
 
 #define MAX_LOADSTRING 100
-
+const int DLUGOSC_PIETRA = 105; //długość pomiędzy pietrami;
 // Zmienne globalne:
 HINSTANCE hInst;                                // bieżące wystąpienie
 WCHAR szTitle[MAX_LOADSTRING];                  // Tekst paska tytułu
@@ -83,6 +83,36 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
+}
+
+void Drawing(HDC hdc) {
+
+    Graphics graphics(hdc);
+    Pen pen(Color(255, 0, 255, 0), 3);
+    Pen pen1(Color(255, 0, 0, 255), 5);
+    Pen pen2(Color(255, 255, 0, 255), 3);
+    Pen body(Color(255, 217, 153, 75), 5);
+
+    for (int i = 0; i < 5; i++) {
+        if (i % 2) {
+            graphics.DrawLine(&pen, 480, DLUGOSC_PIETRA * (i + 1), 720, DLUGOSC_PIETRA * (i + 1));
+        }
+        else {
+            graphics.DrawLine(&pen, 10, DLUGOSC_PIETRA * (i + 1), 230, DLUGOSC_PIETRA * (i + 1));
+        }
+    }
+
+    
+    //sciany stale
+    graphics.DrawLine(&pen1, 480, 10, 480, 105);
+    graphics.DrawLine(&pen1, 480, 210, 480, 315);
+    graphics.DrawLine(&pen1, 480, 420, 480, 527);
+
+    graphics.DrawLine(&pen1, 230, 105, 230, 210);
+    graphics.DrawLine(&pen1, 230, 315, 230, 420);
+    graphics.DrawLine(&pen1, 228, 528, 483, 528);
+
+    
 }
 
 //
