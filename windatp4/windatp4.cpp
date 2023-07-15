@@ -17,7 +17,62 @@ const enum STANY_OSOBY { OSOBA_STOP, OSOBA_KOLEJKA, OSOBA_W_WINDZIE, OSOBA_RUCH,
 const enum STANY_WINDY { WINDA_IDLE, WINDA_STOP, WINDA_DRZWI, WINDA_RUCH };
 const int PRZYCISKI_ID[20]{ 12,13,14,15,21,23,24,25,31,32,34,35,41,42,43,45,51,52,53,54 };
 
+class Osoba {
+public:
+    int x;
+    int y;
+    int waga;
+    int cel;
+    int goal_x;
+    char kierunek;
+    STANY_OSOBY stan;
+    Osoba(int x, int y, int cel) {
+        this->x = x;
+        this->y = y;
+        this->cel = cel;
+        kierunek = 's'; //s - stop g- gora  d - dol l - lewo p - prawow
+        waga = 70;
+        stan = OSOBA_STOP;
+        goal_x = x;
+    }
+    void ObierzCel(int goal_x) {
+        this->goal_x = goal_x;
+    }
+    void UstawKierunek(char kierunek) {
+        this->kierunek = kierunek;
+    }
+    void Ruch() {
+        switch (kierunek)
+        {
+        case 'g':
+            y -= PREDKOSC;
+            break;
+        case 'd':
+            y += PREDKOSC;
+            break;
+        case 'l':
+            x -= PREDKOSC;
+            if (goal_x >= x) {
+                if (stan == OSOBA_PO_WINDZIE) stan = OSOBA_USUN;
+                else stan = OSOBA_W_WINDZIE;
+                kierunek = 's';
+            }
+            break;
+        case 'p':
+            x += PREDKOSC;
 
+            if (goal_x <= x) {
+                if (stan == OSOBA_PO_WINDZIE) stan = OSOBA_USUN;
+                else stan = OSOBA_W_WINDZIE;
+                kierunek = 's';
+            }
+            break;
+        case 's': return;
+        default:
+            break;
+        }
+    }
+};
 // Zmienne globalne:
 HINSTANCE hInst;                                // bieżące wystąpienie
 WCHAR szTitle[MAX_LOADSTRING];                  // Tekst paska tytułu
