@@ -110,6 +110,7 @@ public:
             DrzwiWindy();
             break;
         case WINDA_IDLE:
+            IdleWinda();
             break;
         }
     }
@@ -281,6 +282,20 @@ public:
             else pozycja_drzwi -= PREDKOSC;
         }
 
+    }
+    void IdleWinda() {
+        if (!kolejka.empty()) {
+            ostatnia_aktywnosc = 0;
+            cel = kolejka.front();
+            if (cel == pietro) stan = WINDA_DRZWI;
+            else stan = WINDA_RUCH;
+        }
+        else {
+            ostatnia_aktywnosc += 33;
+            if (ostatnia_aktywnosc >= 4000 && pietro != 0) {
+                DodajDoKolejki(0);
+            }
+        }
     }
 };
 // Zmienne globalne:
