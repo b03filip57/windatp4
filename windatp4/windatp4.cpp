@@ -113,6 +113,7 @@ public:
             IdleWinda();
             break;
         }
+        RuszaniePasazerow();
     }
     void RuchWindy() {
         if (y > PodajWysokoscPietra(cel)) {
@@ -294,6 +295,19 @@ public:
             ostatnia_aktywnosc += 33;
             if (ostatnia_aktywnosc >= 4000 && pietro != 0) {
                 DodajDoKolejki(0);
+            }
+        }
+    }
+    void RuszaniePasazerow() {
+        for (auto& osoba : osobywwindzie) {
+
+            if (stan == WINDA_RUCH || stan == WINDA_STOP) {
+                osoba.Ruch();
+            }
+        }
+        for (int i = 0; i < ILOSC_PIETER; i++) {
+            for (auto& osoba : osobynapietrach[i]) {
+                if (i == pietro && stan == WINDA_STOP) osoba.Ruch();
             }
         }
     }
