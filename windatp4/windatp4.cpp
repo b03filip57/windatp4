@@ -73,6 +73,32 @@ public:
         }
     }
 };
+class Winda {
+public:
+    int y;
+    int pietro;
+    int cel;
+    int waga;
+    int pozycja_drzwi;
+    bool kierunek_gora;
+    int ostatnia_aktywnosc;
+    STANY_WINDY stan;
+    vector<int> kolejka;
+
+    vector<Osoba> osobywwindzie;
+    vector<Osoba>osobynapietrach[5];
+    Winda() {
+        this->y = PARTER;
+        this->pietro = 0;
+        this->cel = 0;
+        this->stan = WINDA_IDLE;
+        this->waga = 0;
+        this->pozycja_drzwi = 0;
+        this->kierunek_gora = true;
+        this->ostatnia_aktywnosc = 0;
+
+    }
+};
 // Zmienne globalne:
 HINSTANCE hInst;                                // bieżące wystąpienie
 WCHAR szTitle[MAX_LOADSTRING];                  // Tekst paska tytułu
