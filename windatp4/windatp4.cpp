@@ -107,6 +107,7 @@ public:
             RuchWindy();
             break;
         case WINDA_DRZWI:
+            DrzwiWindy();
             break;
         case WINDA_IDLE:
             break;
@@ -236,6 +237,50 @@ public:
         if (waga >= MAX_WAGA) return;
         if (osobynapietrach[pietro].empty()) stan = WINDA_DRZWI;
         return;
+    }
+    void KierunekWindy() {
+        if (kierunek_gora) {
+            int max = *max_element(kolejka.begin(), kolejka.end());
+            if (max == pietro) kierunek_gora = false;
+        }
+        else {
+            int min = *min_element(kolejka.begin(), kolejka.end());
+            if (min == pietro) kierunek_gora = true;
+        }
+    }
+    void DrzwiWindy() {
+        KierunekPasazerow('s');
+        bool check = false;
+        for (auto& i : osobywwindzie) {
+            if (i.cel == pietro) check = true;
+        }
+        //drzwi sie otwieraja
+        if (!osobynapietrach[pietro].empty() || check) {
+            if (pozycja_drzwi >= 80) {
+                stan = WINDA_STOP;
+            }
+            else pozycja_drzwi += PREDKOSC;
+        }
+        else {
+            //drzwi sie zamykaja
+            if (pozycja_drzwi <= 0) {
+                KierunekWindy();
+                stan = WINDA_RUCH;
+
+                if (!kolejka.empty()) {
+                    kolejka.erase(kolejka.begin());
+                    if (!kolejka.empty()) {
+
+                        cel = kolejka.front();
+                    }
+                    else {
+                        stan = WINDA_IDLE;
+                    }
+                }
+            }
+            else pozycja_drzwi -= PREDKOSC;
+        }
+
     }
 };
 // Zmienne globalne:
