@@ -762,6 +762,25 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - opublikuj komunikat o wyjściu i wróć
 //
 //
+void wezwij_winde(int ID) {
+    int punkt_x_bazowy, modyfikator;
+    int pietro = ID / 10 - 1;
+    int cel = ID % 10 - 1;
+    if (pietro % 2) {
+        punkt_x_bazowy = 500;
+        modyfikator = 1;
+    }
+    else {
+        punkt_x_bazowy = 200;
+        modyfikator = -1;
+    }
+    winda.DodajDoKolejki(pietro);
+    int x = punkt_x_bazowy + winda.osobynapietrach[pietro].size() * ODLEGLOSC_POMIEDZY_OSOBAMI * modyfikator;
+    int y = winda.PodajWysokoscPietra(pietro);
+
+    Osoba osoba(x, y, cel);
+    winda.osobynapietrach[pietro].push_back(osoba);
+}
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
