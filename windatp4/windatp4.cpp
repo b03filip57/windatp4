@@ -316,7 +316,7 @@ public:
 HINSTANCE hInst;                                // bieżące wystąpienie
 WCHAR szTitle[MAX_LOADSTRING];                  // Tekst paska tytułu
 WCHAR szWindowClass[MAX_LOADSTRING];            // nazwa klasy okna głównego
-
+Winda winda;
 // Przekaż dalej deklaracje funkcji dołączone w tym module kodu:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -407,7 +407,11 @@ void Drawing(HDC hdc) {
             graphics.DrawLine(&pen, 10, DLUGOSC_PIETRA * (i + 1), 230, DLUGOSC_PIETRA * (i + 1));
         }
     }
-
+    //podloga windy
+    graphics.DrawLine(&pen2, 230, winda.y, 480, winda.y);
+    graphics.DrawLine(&pen2, 480, winda.y - 80, 480, winda.y - winda.pozycja_drzwi);
+    graphics.DrawLine(&pen2, 230, winda.y - 80, 230, winda.y - winda.pozycja_drzwi);
+    graphics.DrawLine(&pen2, 230, winda.y - 80, 480, winda.y - 80);
     
     //sciany stale
     graphics.DrawLine(&pen1, 480, 10, 480, 105);
@@ -417,7 +421,40 @@ void Drawing(HDC hdc) {
     graphics.DrawLine(&pen1, 230, 105, 230, 210);
     graphics.DrawLine(&pen1, 230, 315, 230, 420);
     graphics.DrawLine(&pen1, 228, 528, 483, 528);
+    
+    for (int i = 0; i < 5; i++) {
+        {
+            for (auto& osoba : winda.osobynapietrach[i]) {
+                graphics.DrawLine(&body, osoba.x + 5, osoba.y - 15, osoba.x + 5, osoba.y - 35);     //ciało
+                graphics.DrawLine(&body, osoba.x - 5, osoba.y, osoba.x + 5, osoba.y - 15);    //lewa noga
+                graphics.DrawLine(&body, osoba.x + 15, osoba.y, osoba.x + 5, osoba.y - 15);    //prawa noga
+                graphics.DrawLine(&body, osoba.x - 5, osoba.y - 25, osoba.x + 15, osoba.y - 25);     //ręce
+                graphics.DrawEllipse(&body, osoba.x, osoba.y - 45, 10, 10);   //głowa
+            }
+        }
+    }
+    for (auto& osoba : winda.osobywwindzie) {
+        graphics.DrawLine(&body, osoba.x + 5, osoba.y - 15, osoba.x + 5, osoba.y - 35);     //ciało
+        graphics.DrawLine(&body, osoba.x - 5, osoba.y, osoba.x + 5, osoba.y - 15);    //lewa noga
+        graphics.DrawLine(&body, osoba.x + 15, osoba.y, osoba.x + 5, osoba.y - 15);    //prawa noga
+        graphics.DrawLine(&body, osoba.x - 5, osoba.y - 25, osoba.x + 15, osoba.y - 25);     //ręce
+        graphics.DrawEllipse(&body, osoba.x, osoba.y - 45, 10, 10);   //głowa
+    }
+    //tekst
+    TextOut(hdc, 500, 10, L"Waga:", 6);
+    wchar_t buffer[256];
+    int cyfry = floor(log10(winda.waga) + 1) + 1;
+    if (winda.waga == 0) {
+        TextOut(hdc, 550, 10, L"0", 1);
+    }
+    else {
+        wsprintfW(buffer, L"%d", winda.waga);
+        if (winda.waga >= MAX_WAGA) {
+            SetTextColor(hdc, 0x000000FF);
 
+        }
+        TextOut(hdc, 550, 10, buffer, cyfry);
+    }
     
 }
 
