@@ -101,6 +101,7 @@ public:
     void NastepnaAkcja() {
         switch (stan) {
         case WINDA_STOP:
+            StopWindy();
             break;
         case WINDA_RUCH:
             RuchWindy();
@@ -133,6 +134,108 @@ public:
         for (auto& osoba : osobywwindzie) {
             osoba.UstawKierunek(k);
         }
+    }
+    void DodajDoKolejki(int przystanek) {
+        kolejka.push_back(przystanek);
+        SortujKolejke();
+    }
+    void SortujKolejke() {
+        //algorytm SCAN https://www.geeksforgeeks.org/scan-elevator-disk-scheduling-algorithms/
+        vector<int> dol, gora;
+        int head = pietro;
+        bool check = false;
+
+        for (auto req : kolejka) {
+            if (req < head)
+                dol.push_back(req);
+            if (req > head)
+                gora.push_back(req);
+            if (req == head) {
+                check = true;
+            }
+        }
+
+        // sorting left and right vectors
+        std::sort(dol.begin(), dol.end());
+        std::sort(gora.begin(), gora.end());
+
+        // run the while loop two times.
+        // one by one scanning right
+        // and left of the head
+        kolejka.clear();
+        int run = 2;
+        while (run--) {
+            if (!kierunek_gora) {
+                for (int i = dol.size() - 1; i >= 0; i--) {
+                    int cur_track = dol[i];
+                    // appending current track to seek sequence
+                    kolejka.push_back(cur_track);
+                    // accessed track is now the new head
+                    head = cur_track;
+                }
+                kierunek_gora = true;
+            }
+            else if (kierunek_gora) {
+                for (int i = 0; i < gora.size(); i++) {
+                    int cur_track = gora[i];
+                    // appending current track to seek sequence
+                    kolejka.push_back(cur_track);
+                    // accessed track is now new head
+                    head = cur_track;
+                }
+                kierunek_gora = false;
+            }
+        }
+        //priorytetowy req dla osob na tym samym pietrze co winda
+        if (check) kolejka.insert(kolejka.begin(), pietro);
+    }
+    void StopWindy() {
+        //inicjalizator ruchu dla pasazerow wchodzących
+        if (waga >= MAX_WAGA) return;
+        for (int kolejka_osob = 0; kolejka_osob < osobynapietrach[pietro].size(); kolejka_osob++) {
+            Osoba& osoba = osobynapietrach[pietro][kolejka_osob];
+            if (osoba.kierunek == 's' && osoba.stan == OSOBA_STOP) {
+                if (pietro % 2) {
+                    osoba.UstawKierunek('l');
+                    osoba.ObierzCel(osoba.x - 250 + osobywwindzie.size() * 10);
+                }
+                else {
+                    osoba.UstawKierunek('p');
+                    osoba.ObierzCel(osoba.x + 250 - osobywwindzie.size() * 10);
+                }
+                osoba.stan = OSOBA_KOLEJKA;
+            }
+            if (osoba.stan == OSOBA_W_WINDZIE) {
+                waga += osoba.waga;
+                DodajDoKolejki(osoba.cel);
+                osobywwindzie.push_back(osoba);
+            }
+
+        }
+        //usuwanie osob wchodzących do windy i osob które wyszły z pietra Erase-Idiom Algorithm
+        osobynapietrach[pietro].erase(std::remove_if(osobynapietrach[pietro].begin(), osobynapietrach[pietro].end(), [](Osoba const& p) {return p.stan == OSOBA_W_WINDZIE || p.stan == OSOBA_USUN; }), osobynapietrach[pietro].end());
+
+        //osoby wychodzace z windy
+        for (auto& osoba : osobywwindzie) {
+            if (osoba.cel == pietro) {
+                if (pietro % 2) {
+                    osoba.UstawKierunek('p');
+                    osoba.ObierzCel(720);
+                }
+                else {
+                    osoba.UstawKierunek('l');
+                    osoba.ObierzCel(0);
+                }
+                waga -= osoba.waga;
+                osoba.stan = OSOBA_PO_WINDZIE;
+                osobynapietrach[pietro].push_back(osoba);
+            }
+        }
+        //usuwanie osob wychodzaczych z windy
+        osobywwindzie.erase(std::remove_if(osobywwindzie.begin(), osobywwindzie.end(), [&](Osoba const& p) {return p.stan == OSOBA_PO_WINDZIE; }), osobywwindzie.end());
+        if (waga >= MAX_WAGA) return;
+        if (osobynapietrach[pietro].empty()) stan = WINDA_DRZWI;
+        return;
     }
 };
 // Zmienne globalne:
