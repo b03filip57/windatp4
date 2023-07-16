@@ -816,30 +816,64 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            // Analizuj zaznaczenia menu:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
+    {
+        int wmId = LOWORD(wParam);
+        // Analizuj zaznaczenia menu: id przycisku to np 24 czyli przycisk z 2 pietra na 4
+        for (auto id : PRZYCISKI_ID) {
+            if (id == wmId) {
+                wezwij_winde(wmId);
             }
         }
-        break;
-    case WM_PAINT:
+        switch (wmId)
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Tutaj dodaj kod rysujący używający elementu hdc...
-            EndPaint(hWnd, &ps);
+        case IDM_ABOUT:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+            break;
+        case IDM_EXIT:
+            DestroyWindow(hWnd);
+            break;
+        case 55:
+            winda.WindaRestart();
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
         }
-        break;
+
+    }
+    break;
+    case WM_PAINT:
+    {
+        //from https://www.robertelder.ca/doublebuffering/
+        RECT Client_Rect;
+        GetClientRect(hWnd, &Client_Rect);
+        int win_width = Client_Rect.right - Client_Rect.left;
+        int win_height = Client_Rect.bottom + Client_Rect.left;
+        PAINTSTRUCT ps;
+        HDC Memhdc;
+        HDC hdc;
+        HBITMAP Membitmap;
+        hdc = BeginPaint(hWnd, &ps);
+        Memhdc = CreateCompatibleDC(hdc);
+        Membitmap = CreateCompatibleBitmap(hdc, win_width, win_height);
+        SelectObject(Memhdc, Membitmap);
+        //drawing code goes in here
+        FillRect(Memhdc, &Client_Rect, (HBRUSH)GetStockObject(WHITE_BRUSH));
+        Drawing(Memhdc);
+        BitBlt(hdc, 0, 0, win_width, win_height, Memhdc, 0, 0, SRCCOPY);
+        DeleteObject(Membitmap);
+        DeleteDC(Memhdc);
+        DeleteDC(hdc);
+        EndPaint(hWnd, &ps);
+    }
+    break;
+    case WM_TIMER: {
+        winda.NastepnaAkcja();
+        InvalidateRect(hWnd, NULL, true);
+        return 1;
+    }break;
+    case WM_ERASEBKGND:
+    {
+        return 1;
+    }
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
