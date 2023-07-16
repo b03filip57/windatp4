@@ -98,6 +98,42 @@ public:
         this->ostatnia_aktywnosc = 0;
 
     }
+    void NastepnaAkcja() {
+        switch (stan) {
+        case WINDA_STOP:
+            break;
+        case WINDA_RUCH:
+            RuchWindy();
+            break;
+        case WINDA_DRZWI:
+            break;
+        case WINDA_IDLE:
+            break;
+        }
+    }
+    void RuchWindy() {
+        if (y > PodajWysokoscPietra(cel)) {
+            KierunekPasazerow('g');
+            y -= PREDKOSC;
+        }
+        else if (y < PodajWysokoscPietra(cel)) {
+            KierunekPasazerow('d');
+            y += PREDKOSC;
+        }
+        else {
+            pietro = cel;
+            stan = WINDA_DRZWI;
+        }
+
+    }
+    int PodajWysokoscPietra(int pietro) {
+        return 525 - 105 * (pietro);
+    }
+    void KierunekPasazerow(char k) {
+        for (auto& osoba : osobywwindzie) {
+            osoba.UstawKierunek(k);
+        }
+    }
 };
 // Zmienne globalne:
 HINSTANCE hInst;                                // bieżące wystąpienie
