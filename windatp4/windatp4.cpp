@@ -311,6 +311,21 @@ public:
             }
         }
     }
+    void WindaRestart() {
+        this->y = PARTER;
+        this->pietro = 0;
+        this->cel = 0;
+        this->ostatnia_aktywnosc = 0;
+        this->stan = WINDA_IDLE;
+        this->waga = 0;
+        this->pozycja_drzwi = 0;
+        this->kierunek_gora = true;
+        kolejka.clear();
+        osobywwindzie.clear();
+        for (auto& pietra : osobynapietrach) {
+            pietra.clear();
+        }
+    }
 };
 // Zmienne globalne:
 HINSTANCE hInst;                                // bieżące wystąpienie
