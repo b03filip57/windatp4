@@ -740,6 +740,21 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
         (HMENU)12,       // No menu.
         (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
         NULL);      // Pointer not needed.
+    HWND hwndButtonRestart = CreateWindow(
+        L"BUTTON",  // Predefined class; Unicode assumed 
+        L"RESTART",      // Button text 
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+        600,         // x position 
+        10,         // y position 
+        80,        // Button width
+        20,        // Button height
+        hWnd,     // Parent window
+        (HMENU)55,       // No menu. 
+        (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
+    SetTimer(hWnd, 1, CZAS, NULL);
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
 
     if (!hWnd)
     {
